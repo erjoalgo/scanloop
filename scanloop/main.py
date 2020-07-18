@@ -29,7 +29,7 @@ class ScanLoop(object):
     def __init__(self, quality_percent, scan_cmd,
                  scan_format, output_format):
         self.quality_percent = quality_percent
-        self.scan_command = scan_cmd or ScanLoop.guess_scan_command()
+        self.scan_command = (scan_cmd or ScanLoop.guess_scan_command()).split()
         self.scan_format = scan_format
         self.output_format = output_format
 
