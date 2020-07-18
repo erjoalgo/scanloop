@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import subprocess
+import sys
 import time
 
 
@@ -72,8 +73,10 @@ class ScanLoop(object):
     def scan_page(self, fname_output):
         """Scan a single page to the given output filename."""
         logging.info("scanning page to %s. Ctrl+C to stop...", fname_output)
+        attempts = 0
         try:
             while True:
+                attempts += 1
                 with open(fname_output, "wb") as fh:
                     p = subprocess.Popen(self.scan_command,
                                          stdout=fh,
@@ -84,6 +87,12 @@ class ScanLoop(object):
                 if p.returncode == 0:
                     logging.info("successfully scanned %s", fname_output)
                     return True
+                _, stderr= p.communicate()
+                sys.stdout.write("\rscan attempt {}. Ctr+C to stop...".format(
+                    attempts))
+                sys.stdout.write(" " + stderr.decode().replace("\n", " "))
+                sys.stdout.flush()
+
                 time.sleep(1)
         except KeyboardInterrupt:
             try:
