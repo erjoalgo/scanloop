@@ -156,10 +156,14 @@ def main():
     logging.root.setLevel(logging.INFO)
     parser = argparse.ArgumentParser()
     parser.add_argument("--quality-percent",
-                        help="imagemagick -quality of merged document",
+                        help="The imagemagick -quality of merged document.",
                         default=30)
     parser.add_argument("--scan-cmd",
-                        help="command used to scan a single page to stdout")
+                        help="command used to scan a single page to stdout.")
+    parser.add_argument("--scan-format", default="pnm",
+                        help="The file-format extension of the scan command output.")
+    parser.add_argument("--output-format", default="pdf",
+                        help="The file-format extension of the merged document.")
     parser.add_argument("--version", action="version", version=__version__)
 
 
