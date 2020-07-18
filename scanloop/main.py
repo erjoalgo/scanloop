@@ -41,13 +41,11 @@ class ScanLoop(object):
         if env_cmd:
             return env_cmd
         logging.info("checking scanner availability via scanimage...")
+        if command_exists("imagescan"):
+            return "{} {}".format("imagescan", " --no-interface")
         if command_exists("scanimage") and subprocess.call(
                 ["sudo", "scanimage", "-L"]):
             return "sudo scanimage"
-        if command_exists("imagescan"):
-            scan_binary = "/usr/lib/x86_64-linux-gnu/utsushi/utsushi-scan"
-            if command_exists(scan_binary):
-                return "{} {}".format(scan_binary, " --no-interface")
         return None
 
 
