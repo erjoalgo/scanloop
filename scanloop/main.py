@@ -44,7 +44,7 @@ class ScanLoop(object):
         if command_exists("imagescan"):
             return "{} {}".format("imagescan", " --no-interface")
         if command_exists("scanimage") and subprocess.call(
-                ["sudo", "scanimage", "-L"]):
+                ["sudo", "scanimage", "-L"]) == 0:
             return "sudo scanimage"
         return None
 
