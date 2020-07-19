@@ -139,7 +139,9 @@ class ScanLoop(object):
 
     def start(self):
         """Scan documents indefinitely."""
+        orig_dir = os.getcwd()
         while True:
+            os.chdir(orig_dir)
             doc_name = input("enter new doc name, q to quit: ")
             if doc_name == "q":
                 break
