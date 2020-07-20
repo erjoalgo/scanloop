@@ -27,9 +27,10 @@ class ScanLoop(object):
     """Scans documents in a loop."""
 
     def __init__(self, quality_percent, scan_cmd,
-                 scan_format, output_format):
+                 scan_format, output_format, pdf_viewer):
         self.quality_percent = quality_percent
         self.scan_command = (scan_cmd or ScanLoop.guess_scan_command()).split()
+        self.pdf_viewer = pdf_viewer # allow setting no pdf viewer
         self.scan_format = scan_format
         self.output_format = output_format
 
@@ -46,6 +47,16 @@ class ScanLoop(object):
         if command_exists("scanimage") and subprocess.call(
                 ["sudo", "scanimage", "-L"]) == 0:
             return "sudo scanimage"
+        return None
+
+
+    @staticmethod
+    def guess_pdf_viewer():
+        """Attempts to guess the scan command."""
+        for pdf_viewer in ("zathura", "evince", "gv", "open"):
+            if command_exists(pdf_viewer):
+                return pdf_viewer
+        logging.warn("no pdf viewer could be guessed")
         return None
 
 
@@ -117,7 +128,8 @@ class ScanLoop(object):
         ret = subprocess.call(cmd)
         if ret != 0:
             raise Exception("non-zero exit status: {}".format(ret))
-        # subprocess.call(["zathura", output])
+        if self.pdf_viewer:
+            subprocess.call([self.pdf_viewer, output])
 
     def scan_doc(self, doc_name):
         """Create a scan of a doc containing one or more pages."""
@@ -166,6 +178,8 @@ def main():
                         help="The file-format extension of the scan command output.")
     parser.add_argument("--output-format", default="pdf",
                         help="The file-format extension of the merged document.")
+    parser.add_argument("--pdf-viewer", help="Command to open the output files.",
+                        default=ScanLoop.guess_pdf_viewer())
     parser.add_argument("--version", action="version", version=__version__)
 
 
