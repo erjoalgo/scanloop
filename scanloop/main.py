@@ -116,10 +116,11 @@ class ScanLoop(object):
         for (_, pnm) in self.list_ordered_pages(extension=self.scan_format):
             # need itermediate jpg conversion to enforce "-quality" space savings
             jpg = "{}.jpg".format(pnm.split(".")[0])
-            ret = subprocess.call(["convert", pnm, "-quality",
-                                   str(self.quality_percent), jpg])
+            cmd = ["convert", pnm, "-quality", str(self.quality_percent), jpg]
+            ret = subprocess.call(cmd)
             if ret != 0:
-                raise Exception("non-zero exit status: {}".format(ret))
+                raise Exception("non-zero exit status: {} of {}".format(
+                    ret, " ".join(cmd)))
 
         cmd = (["convert"] +
                [fname for (_, fname) in self.list_ordered_pages(extension="jpg")] +
@@ -127,7 +128,8 @@ class ScanLoop(object):
         logging.info("convert command: %s", " ".join(cmd))
         ret = subprocess.call(cmd)
         if ret != 0:
-            raise Exception("non-zero exit status: {}".format(ret))
+            raise Exception("non-zero exit status: {} of {}".format(
+                ret, " ".join(cmd)))
         if self.pdf_viewer:
             subprocess.call([self.pdf_viewer, output])
 
