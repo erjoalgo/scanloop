@@ -159,7 +159,11 @@ class ScanLoop(object):
         orig_dir = os.getcwd()
         while True:
             os.chdir(orig_dir)
-            doc_name = input("enter new doc name, q to quit: ")
+            try:
+                doc_name = input("enter new doc name, q to quit: ")
+            except EOFError:
+                # Ctrl+D quits too
+                break
             if doc_name == "q":
                 break
             if not doc_name:
