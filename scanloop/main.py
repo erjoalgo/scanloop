@@ -93,13 +93,12 @@ class ScanLoop(object):
                     p = subprocess.Popen(self.scan_command,
                                          stdout=fh,
                                          stderr=subprocess.PIPE)
-                # print ("DEBUG TRACE: scan-loop-docs 6vzg ")
-                p.wait()
-                # print ("DEBUG TRACE: scan-loop-docs ikow ")
+                # communicate() reads stderr while waiting; wait() alone
+                # could block forever once the stderr pipe fills up.
+                _, stderr = p.communicate()
                 if p.returncode == 0:
                     logging.info("successfully scanned %s", fname_output)
                     return True
-                _, stderr = p.communicate()
                 sys.stdout.write("\rscan attempt {}. Ctr+C to stop...".format(
                     attempts))
                 sys.stdout.write(" " + stderr.decode().replace("\n", " "))
