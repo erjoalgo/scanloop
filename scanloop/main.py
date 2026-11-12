@@ -59,7 +59,7 @@ class ScanLoop(object):
         for pdf_viewer in ("zathura", "evince", "gv", "open"):
             if command_exists(pdf_viewer):
                 return pdf_viewer
-        logging.warn("no pdf viewer could be guessed")
+        logging.warning("no pdf viewer could be guessed")
         return None
 
 
