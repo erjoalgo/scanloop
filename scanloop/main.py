@@ -79,7 +79,7 @@ class ScanLoop(object):
         return sorted(
             (int(fname.split(".")[0]), fname)
             for fname in os.listdir(os.getcwd())
-            if re.match("[0-9]+.{}".format(extension), fname))
+            if re.match("^[0-9]+[.]{}$".format(extension), fname))
 
 
     def scan_page(self, fname_output):
