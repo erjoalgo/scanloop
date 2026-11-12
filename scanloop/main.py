@@ -6,6 +6,7 @@ import argparse
 import logging
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -20,7 +21,7 @@ except Exception as ex:
 
 def command_exists(command):
     """Returns true if the given command is available in the system."""
-    return subprocess.call(["which", command]) == 0
+    return shutil.which(command) is not None
 
 
 class ScanLoop(object):
