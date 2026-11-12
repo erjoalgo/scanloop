@@ -55,7 +55,7 @@ class ScanLoop(object):
 
     @staticmethod
     def guess_pdf_viewer():
-        """Attempts to guess the scan command."""
+        """Attempts to guess the PDF viewer."""
         for pdf_viewer in ("zathura", "evince", "gv", "open"):
             if command_exists(pdf_viewer):
                 return pdf_viewer
@@ -67,7 +67,7 @@ class ScanLoop(object):
         """Check all requirements are satisfied before scanning."""
         if not command_exists("convert"):
             raise Exception(
-                "missing imagemagic convert. hint: {apt-get,brew} install imagemagick")
+                "missing imagemagick convert. hint: {apt-get,brew} install imagemagick")
         if not self.scan_command:
             raise Exception("no scan command detected")
 
@@ -99,7 +99,7 @@ class ScanLoop(object):
                 if p.returncode == 0:
                     logging.info("successfully scanned %s", fname_output)
                     return True
-                sys.stdout.write("\rscan attempt {}. Ctr+C to stop...".format(
+                sys.stdout.write("\rscan attempt {}. Ctrl+C to stop...".format(
                     attempts))
                 sys.stdout.write(" " + stderr.decode().replace("\n", " "))
                 sys.stdout.flush()
@@ -116,7 +116,7 @@ class ScanLoop(object):
     def merge_pages(self, output):
         """Merge multiple page scans into a single output file."""
         for (_, pnm) in self.list_ordered_pages(extension=self.scan_format):
-            # need itermediate jpg conversion to enforce "-quality" space savings
+            # need intermediate jpg conversion to enforce "-quality" space savings
             jpg = "{}.jpg".format(pnm.split(".")[0])
             cmd = ["convert", pnm, "-quality", str(self.quality_percent), jpg]
             ret = subprocess.call(cmd)
