@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scanloop"
+dynamic = ["version"]
+requires-python = ">=3.8"
+authors = [
+  {name = "Ernesto Alfonso", email = "erjoalgo@gmail.com"},
+]
+description = "A scanner front-end to efficiently scan several multi-page documents."
+readme = "README.md"
+license = "GPL-3.0-or-later"
+keywords = ["scanner", "imagemagick"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/erjoalgo/scanloop"
+Repository = "https://github.com/erjoalgo/scanloop"
+"Bug Tracker" = "https://github.com/erjoalgo/scanloop/issues"
+
+[project.scripts]
+scanloop = "scanloop.main:main"
+
+[tool.setuptools]
+packages = ["scanloop"]
+
+[tool.setuptools.dynamic]
+version = {attr = "scanloop.version.__version__"}
