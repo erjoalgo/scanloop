@@ -30,7 +30,9 @@ class ScanLoop(object):
     def __init__(self, quality_percent, scan_cmd,
                  scan_format, output_format, pdf_viewer):
         self.quality_percent = quality_percent
-        self.scan_command = (scan_cmd or ScanLoop.guess_scan_command()).split()
+        scan_cmd = scan_cmd or ScanLoop.guess_scan_command()
+        # None if no scanner was found; check_requirements reports it.
+        self.scan_command = scan_cmd.split() if scan_cmd else None
         self.pdf_viewer = pdf_viewer # allow setting no pdf viewer
         self.scan_format = scan_format
         self.output_format = output_format
