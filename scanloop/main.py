@@ -162,6 +162,8 @@ class ScanLoop(object):
             doc_name = input("enter new doc name, q to quit: ")
             if doc_name == "q":
                 break
+            if not doc_name:
+                continue
             assert "/" not in doc_name, "invalid filename"
             try:
                 os.mkdir(doc_name)
